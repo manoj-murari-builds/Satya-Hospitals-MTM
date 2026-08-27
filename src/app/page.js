@@ -234,7 +234,7 @@ function App() {
 
             <motion.div className="hero-doctor-card" initial={{ opacity: 0, x: 22 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: .6, delay: .15 }}>
               <div className="doctor-card-label">Meet your specialist</div>
-              <DoctorPortrait type="hero" />
+              <DoctorPortrait type="profile" />
               <div className="hero-doctor-info">
                 <h2>{config.doctor.name}</h2>
                 <p>{config.doctor.title}</p>
@@ -269,15 +269,8 @@ function App() {
         </section>
 
         <section className="section doctor-section" id="doctor" data-testid="doctor-section">
-          <div className="container doctor-grid">
-            <div className="doctor-feature">
-              <DoctorPortrait type="profile" />
-              <div className="portrait-caption">
-                <span>Lead / Management Doctor</span>
-                <strong>Dr. Satya Phanindra Kurella</strong>
-              </div>
-            </div>
-            <div className="doctor-profile">
+          <div className="container">
+            <div className="doctor-profile doctor-profile-standalone">
               <SectionIntro
                 eyebrow="Meet your orthopaedic specialist"
                 title="Clear guidance for your next step."
