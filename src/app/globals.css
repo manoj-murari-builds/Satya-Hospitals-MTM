@@ -107,6 +107,15 @@ a {
   display: flex;
   align-items: center;
   gap: 11px;
+  text-decoration: none;
+}
+
+.brand-logo {
+  height: 64px;
+  width: auto;
+  max-width: 260px;
+  object-fit: contain;
+  display: block;
 }
 
 .brand-mark {
@@ -1660,6 +1669,11 @@ a {
 
   .nav {
     height: 68px;
+  }
+
+  .brand-logo {
+    height: 58px;
+    max-width: 210px;
   }
 
   .nav-links.open {

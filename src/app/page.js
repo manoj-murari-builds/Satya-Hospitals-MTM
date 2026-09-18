@@ -18,6 +18,7 @@ const config = {
   mapsUrl: 'https://maps.app.goo.gl/sHKrkJkcrnajF3yq8',
   instagramHandle: '@satyahospitalsmtm',
   instagramUrl: 'https://www.instagram.com/satyahospitalsmtm/',
+  logo: '/satya-hospitals-logo.png',
   doctorHeroImage: '/doctor-hero.png',
   doctorProfileImage: '/doctor-profile.png',
   hospitalImages: {
@@ -196,8 +197,13 @@ function App() {
 
       <header className="nav" data-testid="main-header">
         <a className="brand" href="#home" data-testid="brand-link">
-          <span className="brand-mark">SH</span>
-          <span><strong>{config.hospital}</strong><small>{config.clinic}</small></span>
+          <img
+            src={config.logo}
+            alt="Satya Hospitals"
+            className="brand-logo"
+            width={1024}
+            height={341}
+          />
         </a>
         <nav id="nav-menu" className={menuOpen ? 'nav-links open' : 'nav-links'}>
           {[
