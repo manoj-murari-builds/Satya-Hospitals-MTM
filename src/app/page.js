@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-  ArrowRight, Bone, CalendarDays, Check, ChevronDown, Clock3, ExternalLink,
-  Camera, MapPin, Menu, Phone, ShieldCheck, Sparkles, X,
+  ArrowRight, Bone, Brain, CalendarDays, Check, ChevronDown, Clock3, ExternalLink,
+  Camera, MapPin, Menu, Phone, ShieldCheck, Sparkles, Stethoscope, X,
   Activity, HeartPulse, Footprints, Star
 } from 'lucide-react';
 import { Toaster, toast } from 'sonner';
@@ -38,7 +38,7 @@ const config = {
   },
 };
 
-const waMessage = 'Hello, I would like to book a consultation at Satya Hospitals. Please share the available appointment details.';
+const waMessage = 'Hello, I have a question about Satya Hospitals.';
 const waLink = `${config.whatsapp}?text=${encodeURIComponent(waMessage)}`;
 
 const services = [
@@ -46,8 +46,33 @@ const services = [
   ['Fracture & Trauma Care', 'Evaluation and treatment pathways for fractures, injuries and orthopaedic trauma.', ShieldCheck],
   ['Spine Care', 'Assessment and treatment pathways for common spine and back-related conditions.', Sparkles],
   ['Arthroscopy', 'Minimally invasive orthopaedic procedures where clinically appropriate.', Activity],
-  ['Pain Management', 'Focused care for musculoskeletal and chronic pain conditions.', HeartPulse],
-  ['Physiotherapy & Rehabilitation', 'Support for recovery, mobility and post-treatment rehabilitation.', Footprints],
+];
+
+const secondaryDepts = [
+  {
+    id: 'general-surgery',
+    name: 'General Surgery',
+    Icon: Stethoscope,
+    description: 'Surgical care provided by the hospital\'s clinical team. Contact the hospital directly for information on available procedures and consultation pathways.',
+  },
+  {
+    id: 'neurosurgery',
+    name: 'Neurosurgery',
+    Icon: Brain,
+    description: 'Neurosurgical services available at the hospital. Contact the hospital for consultation and referral information.',
+  },
+  {
+    id: 'pain-management',
+    name: 'Pain Management',
+    Icon: HeartPulse,
+    description: 'Focused assessment and management for chronic and acute pain conditions, including musculoskeletal and nerve-related pain.',
+  },
+  {
+    id: 'physiotherapy',
+    name: 'Physiotherapy & Rehabilitation',
+    Icon: Footprints,
+    description: 'Structured rehabilitation and physiotherapy support for post-treatment recovery, mobility improvement, and long-term wellbeing.',
+  },
 ];
 
 const conditions = ['Knee pain', 'Joint pain', 'Sciatica', 'Frozen shoulder', 'Spine-related pain', 'Fractures', 'Mobility difficulties', 'Joint swelling'];
@@ -56,28 +81,24 @@ const patientReviews = [
   {
     name: "Barkathunnisa",
     location: "Gudivada",
-    time: "3 months ago",
     text: "Suffering from severe spine problems for 8 years... Dr. Satya Phanindra performed my keyhole spine surgery successfully. On the second day itself I was able to wake up, sit, and walk with support. Satya Hospital is the best hospital in Machilipatnam for Orthopaedics and spine surgery.",
     rating: 5
   },
   {
     name: "Avinash Kala",
     location: "Rajahmundry",
-    time: "6 months ago",
     text: "We admitted my wife's aunt (aged 80 years) at the hospital as she fell and broke her hip ball. We brought her from Rajahmundry for treatment. Dr Satya has shown great patience explaining us about the situation.",
     rating: 5
   },
   {
     name: "K. Vamsie",
     location: "Machilipatnam",
-    time: "a month ago",
     text: "Dr. Satya Phanindra performed ball replacement surgery, and the results are excellent. He is a very patient and knowledgeable doctor. The staff is also very helpful. Highly recommended for Orthopaedic treatment.",
     rating: 5
   },
   {
     name: "Chandrasekhar Munagala",
     location: "Local Guide",
-    time: "6 months ago",
     text: "Had a very good experience at Satya Hospital. Dr. Satya Phanindra performed my ankle fracture surgery, and the results are excellent. He is a very patient and knowledgeable doctor. The staff is also very helpful.",
     rating: 5
   }
@@ -85,16 +106,16 @@ const patientReviews = [
 
 const faqs = [
   ['Where is Satya Hospitals located?', 'Government Hospital Road, Ramanaidupeta, Machilipatnam, Andhra Pradesh – 521001.'],
-  ['What does Satya Hospitals specialize in?', 'Orthopaedic and pain-related care, including joint replacement, spine care, trauma and rehabilitation.'],
+  ['What does Satya Hospitals specialize in?', 'Orthopaedics (primary specialty — joint replacement, spine care, fracture & trauma, arthroscopy), as well as General Surgery, Neurosurgery, Pain Management, and Physiotherapy & Rehabilitation.'],
   ['Who is the lead doctor?', 'Dr. Satya Phanindra Kurella (MBBS, D.Ortho, DNB Ortho, FIJR, FIRD) – Orthopaedic & Joint Replacement Specialist.'],
   ['What are the OPD timings?', 'Monday–Saturday: 9:00 AM–1:00 PM and 5:00 PM–8:00 PM. Sunday: 10:00 AM–1:00 PM.'],
-  ['How can I book an appointment?', 'Call or WhatsApp +91 7207806099. The appointment form on this page opens a prefilled WhatsApp message.'],
+  ['How can I request an appointment?', 'Call or WhatsApp +91 7207806099. The appointment form on this page opens a prefilled WhatsApp message.'],
   ['How can I reach the hospital?', 'Use the "Get Directions" button in the Location section to open the hospital location in Google Maps.'],
 ];
 
 const journey = [
   ['01', 'Call or WhatsApp', 'Start by sharing your concern or asking about an appointment.'],
-  ['02', 'Discuss your concern', 'Tell the hospital what you would like help with and your preferred visit time.'],
+  ['02', 'Discuss your concern', 'Tell the hospital what you would like help with and your preferred visit date.'],
   ['03', 'Visit Satya Hospitals', 'Come to Government Hospital Road, Ramanaidupeta, Machilipatnam.'],
   ['04', 'Meet the specialist', 'Discuss your orthopaedic care with Dr. Satya Phanindra Kurella.']
 ];
@@ -148,9 +169,12 @@ function WhatsAppIcon({ size = 16, className = "" }) {
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [bookingOpen, setBookingOpen] = useState(false);
   const [faqOpen, setFaqOpen] = useState(0);
   const [form, setForm] = useState({ name: '', phone: '', reason: '', date: '' });
+
+  const scrollToAppointment = () => {
+    document.querySelector('#appointment')?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const update = (key) => (event) => setForm({ ...form, [key]: event.target.value });
 
@@ -159,7 +183,6 @@ function App() {
     if (!form.name || !form.phone) return toast.error('Please add your name and phone number.');
     const msg = `Hello, I would like to book a consultation at Satya Hospitals.\nName: ${form.name}\nPhone: ${form.phone}\nReason: ${form.reason || 'Not specified'}\nPreferred date: ${form.date || 'Not specified'}`;
     window.open(`${config.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
-    setBookingOpen(false);
   };
 
   return (
@@ -176,10 +199,10 @@ function App() {
           <span className="brand-mark">SH</span>
           <span><strong>{config.hospital}</strong><small>{config.clinic}</small></span>
         </a>
-        <nav className={menuOpen ? 'nav-links open' : 'nav-links'}>
+        <nav id="nav-menu" className={menuOpen ? 'nav-links open' : 'nav-links'}>
           {[
             ['doctor', 'Doctor'],
-            ['services', 'Services'],
+            ['departments', 'Departments & Specialties'],
             ['reviews', 'Patient Reviews'],
             ['journey', 'Your Visit'],
             ['location', 'Location'],
@@ -191,7 +214,14 @@ function App() {
             <WhatsAppIcon size={16} /> WhatsApp
           </a>
         </nav>
-        <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation" data-testid="mobile-menu-button">
+        <button
+          className="menu-button"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle navigation"
+          aria-expanded={menuOpen}
+          aria-controls="nav-menu"
+          data-testid="mobile-menu-button"
+        >
           {menuOpen ? <X /> : <Menu />}
         </button>
       </header>
@@ -213,14 +243,14 @@ function App() {
                     <span>{config.doctor.credentials.join(' · ')}</span>
                   </div>
                 </div>
-                <a href="https://maps.app.goo.gl/sHKrkJkcrnajF3yq8" target="_blank" rel="noreferrer" className="hero-trust-rating">
+                <a href={config.mapsUrl} target="_blank" rel="noreferrer" className="hero-trust-rating" title="5.0 rating from 78 Google Reviews">
                   <span className="hero-trust-stars">★★★★★</span>
-                  <span>4.8 · Google Reviews</span>
+                  <span>5.0 · Google Reviews</span>
                 </a>
               </div>
               <div className="hero-actions">
-                <button className="button button-accent" onClick={() => setBookingOpen(true)} data-testid="hero-book-button">
-                  <CalendarDays size={18} /> Book an appointment
+                <button className="button button-accent" onClick={scrollToAppointment} data-testid="hero-book-button">
+                  <CalendarDays size={18} /> Request an appointment
                 </button>
                 <a className="button button-ghost" href={config.phoneHref} data-testid="hero-call-link">
                   <Phone size={18} /> Talk to the hospital
@@ -232,7 +262,7 @@ function App() {
               </div>
             </motion.div>
 
-            <motion.div className="hero-doctor-card" initial={{ opacity: 0, x: 22 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: .6, delay: .15 }}>
+            <motion.div className="hero-doctor-card" id="doctor" initial={{ opacity: 0, x: 22 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: .6, delay: .15 }}>
               <div className="doctor-card-label">Meet your specialist</div>
               <DoctorPortrait type="profile" />
               <div className="hero-doctor-info">
@@ -242,8 +272,8 @@ function App() {
                   {config.doctor.credentials.map((item) => <span key={item}>{item}</span>)}
                 </div>
               </div>
-              <a href="#doctor" className="text-link" data-testid="hero-doctor-profile-link">
-                View doctor profile <ArrowRight size={15} />
+              <a href="#appointment" onClick={scrollToAppointment} className="text-link" data-testid="hero-doctor-profile-link">
+                Request an appointment <ArrowRight size={15} />
               </a>
             </motion.div>
           </div>
@@ -268,57 +298,60 @@ function App() {
           </div>
         </section>
 
-        <section className="section doctor-section" id="doctor" data-testid="doctor-section">
+        <section className="section departments-section" id="departments" data-testid="departments-section">
           <div className="container">
-            <div className="doctor-profile doctor-profile-standalone">
-              <SectionIntro
-                eyebrow="Meet your orthopaedic specialist"
-                title="Clear guidance for your next step."
-                copy="Dr. Satya Phanindra Kurella is associated with Satya Hospitals as the lead doctor, with specialized expertise in orthopaedics, joint replacement, and complex spine care."
-              />
-              <div className="credential-list">
-                {config.doctor.credentials.map((item) => (
-                  <div key={item}><Check size={16} /> <strong>{item}</strong></div>
+            <SectionIntro eyebrow="Departments & Specialties" title="Care across multiple clinical areas" copy="Satya Hospitals provides orthopaedic, surgical, neurological, pain and rehabilitation services for patients in Machilipatnam and the surrounding region." />
+
+            {/* Primary specialty — Orthopaedics */}
+            <div className="dept-primary-card">
+              <div className="dept-primary-header">
+                <span className="eyebrow light"><span className="eyebrow-dot" /> Primary Specialty</span>
+                <h3>Orthopaedics</h3>
+                <p>The core clinical specialty at Satya Hospitals. Dr. Satya Phanindra Kurella leads orthopaedic care covering joints, spine, fractures, pain, and post-treatment rehabilitation.</p>
+              </div>
+              <div className="service-grid orthopaedic-services-grid">
+                {services.map(([title, copy, Icon], index) => (
+                  <motion.article className="service-card" key={title} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * .05 }} data-testid={`service-card-${index}`}>
+                    <span className="service-number">0{index + 1}</span>
+                    <div className="icon-box"><Icon size={23} /></div>
+                    <h3>{title}</h3>
+                    <p>{copy}</p>
+                    <button onClick={scrollToAppointment} data-testid={`service-book-${index}`}>
+                      Talk to the hospital <ArrowRight size={15} />
+                    </button>
+                  </motion.article>
                 ))}
               </div>
-              <p className="body-copy">
-                Satya Hospitals brings focused orthopaedic and pain care closer to patients in Machilipatnam. Speak with the hospital to understand the right consultation pathway for your concern.
-              </p>
-              <div className="action-row">
-                <button className="button button-navy" onClick={() => setBookingOpen(true)} data-testid="doctor-book-button">
-                  Book a consultation <ArrowRight size={17} />
-                </button>
-                <a className="text-link" href={config.phoneHref} data-testid="doctor-call-link">
-                  <Phone size={16} /> Call {config.phone}
-                </a>
-              </div>
             </div>
-          </div>
-        </section>
 
-        <section className="section services-section" id="services" data-testid="services-section">
-          <div className="container">
-            <SectionIntro eyebrow="What we focus on" title="Comprehensive orthopaedic care" copy="A focused set of services for joints, bones, spine, pain, injury and recovery." />
-            <div className="service-grid">
-              {services.map(([title, copy, Icon], index) => (
-                <motion.article className="service-card" key={title} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * .05 }} data-testid={`service-card-${index}`}>
-                  <span className="service-number">0{index + 1}</span>
-                  <div className="icon-box"><Icon size={23} /></div>
-                  <h3>{title}</h3>
-                  <p>{copy}</p>
-                  <button onClick={() => setBookingOpen(true)} data-testid={`service-book-${index}`}>
-                    Talk to the hospital <ArrowRight size={15} />
-                  </button>
+            {/* Secondary departments */}
+            <div className="dept-grid">
+              {secondaryDepts.map(({ id, name, Icon, description }, index) => (
+                <motion.article className="dept-secondary-card" key={id} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * .07 }} data-testid={`dept-card-${index}`}>
+                  <div className="icon-box"><Icon size={22} /></div>
+                  <div className="dept-secondary-content">
+                    <h3>{name}</h3>
+                    <p>{description}</p>
+                    <button onClick={scrollToAppointment} data-testid={`dept-book-${index}`}>
+                      Talk to the hospital <ArrowRight size={15} />
+                    </button>
+                  </div>
                 </motion.article>
               ))}
             </div>
           </div>
         </section>
 
+
         {/* Real Patient Reviews Section */}
         <section className="section reviews-section" id="reviews" data-testid="reviews-section">
           <div className="container">
-            <SectionIntro eyebrow="Patient Experiences" title="Trusted by families across Andhra Pradesh" copy="Real stories from verified Google reviews of patients treated at Satya Hospitals." />
+            <SectionIntro eyebrow="Patient Experiences" title="Trusted by families across Andhra Pradesh" copy="Selected patient reviews from Google." />
+            <div style={{ marginTop: '16px' }}>
+              <a href={config.mapsUrl} target="_blank" rel="noreferrer" className="text-link" data-testid="reviews-google-link">
+                View reviews on Google <ExternalLink size={14} />
+              </a>
+            </div>
           </div>
           <div className="reviews-track">
             <div className="reviews-inner">
@@ -331,7 +364,7 @@ function App() {
                   <p className="review-text">"{rev.text}"</p>
                   <div className="review-author">
                     <strong className="review-name">{rev.name}</strong>
-                    <span className="review-meta">{rev.location} · {rev.time}</span>
+                    <span className="review-meta">{rev.location}</span>
                   </div>
                 </article>
               ))}
@@ -344,7 +377,7 @@ function App() {
                   <p className="review-text">"{rev.text}"</p>
                   <div className="review-author">
                     <strong className="review-name">{rev.name}</strong>
-                    <span className="review-meta">{rev.location} · {rev.time}</span>
+                    <span className="review-meta">{rev.location}</span>
                   </div>
                 </article>
               ))}
@@ -412,28 +445,11 @@ function App() {
           </div>
         </section>
 
-        <section className="section insights-section" data-testid="insights-section">
-          <div className="container insight-layout">
-            <div>
-              <SectionIntro eyebrow="Orthopaedic health insights" title="Useful conversations start here." copy="A space for Satya Hospitals to share simple, factual orthopaedic education." />
-              <a className="text-link" href={waLink} target="_blank" rel="noreferrer" data-testid="insights-whatsapp-link">
-                Ask about your concern <ArrowRight size={15} />
-              </a>
-            </div>
-            <div className="insight-list">
-              {['Sciatica', 'Frozen shoulder', 'Knee pain', 'Joint swelling', 'Spine care', 'Fracture recovery'].map((item, index) => (
-                <a href={waLink} target="_blank" rel="noreferrer" key={item} data-testid={`insight-link-${index}`}>
-                  <span>{item}</span><ArrowRight size={17} />
-                </a>
-              ))}
-            </div>
-          </div>
-        </section>
 
         <section className="section appointment-section" id="appointment" data-testid="appointment-section">
           <div className="container appointment-grid">
             <div className="appointment-copy">
-              <span className="eyebrow">Book your consultation</span>
+              <span className="eyebrow">Request an appointment</span>
               <h2>Let’s make your next step clear.</h2>
               <p>Share a few details and WhatsApp will open with a prefilled message for the hospital.</p>
               <div className="timing-card">
@@ -494,7 +510,7 @@ function App() {
         <section className="urgent-section" data-testid="urgent-section">
           <div className="container urgent-inner">
             <div>
-              <span className="eyebrow light">Urgent orthopaedic attention?</span>
+              <span className="eyebrow light">Need to speak with the hospital?</span>
               <h2>For accident, fracture or trauma-related concerns, contact the hospital directly.</h2>
             </div>
             <a className="button button-light" href={config.phoneHref} data-testid="urgent-call-link"><Phone size={17} /> Call the hospital</a>
@@ -541,8 +557,8 @@ function App() {
             <h2>Take the first step toward better orthopaedic care.</h2>
             <p>Speak with Satya Hospitals to discuss your consultation.</p>
             <div className="hero-actions">
-              <button className="button button-navy" onClick={() => setBookingOpen(true)} data-testid="final-book-button">
-                <CalendarDays size={18} /> Book an appointment
+              <button className="button button-navy" onClick={scrollToAppointment} data-testid="final-book-button">
+                <CalendarDays size={18} /> Request an appointment
               </button>
               <a className="button button-outline" href={config.phoneHref} data-testid="final-call-link">
                 <Phone size={18} /> Call the hospital
@@ -564,9 +580,11 @@ function App() {
           <div>
             <h3>Explore</h3>
             <a href="#doctor" data-testid="footer-doctor-link">Doctor</a>
-            <a href="#services" data-testid="footer-services-link">Services</a>
+            <a href="#departments" data-testid="footer-departments-link">Departments & Specialties</a>
             <a href="#reviews" data-testid="footer-reviews-link">Patient Reviews</a>
+            <a href="#journey" data-testid="footer-journey-link">Your Visit</a>
             <a href="#appointment" data-testid="footer-appointment-link">Appointment</a>
+            <a href="#location" data-testid="footer-location-link">Location</a>
             <a href="#faq" data-testid="footer-faq-link">FAQs</a>
           </div>
           <div>
@@ -585,27 +603,8 @@ function App() {
       <div className="mobile-cta" data-testid="sticky-mobile-cta">
         <a href={config.phoneHref} data-testid="sticky-call-link"><Phone size={16} /> Call</a>
         <a href={waLink} target="_blank" rel="noreferrer" data-testid="sticky-whatsapp-link"><WhatsAppIcon size={16} /> WhatsApp</a>
-        <button onClick={() => setBookingOpen(true)} data-testid="sticky-book-button"><CalendarDays size={16} /> Book</button>
+        <button onClick={scrollToAppointment} data-testid="sticky-book-button"><CalendarDays size={16} /> Book</button>
       </div>
-
-      <AnimatePresence>
-        {bookingOpen && (
-          <div className="modal-backdrop" data-testid="booking-modal" onClick={() => setBookingOpen(false)}>
-            <motion.div className="booking-modal" initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 15 }} onClick={(e) => e.stopPropagation()}>
-              <button className="modal-close" onClick={() => setBookingOpen(false)} aria-label="Close booking form" data-testid="booking-modal-close"><X /></button>
-              <span className="eyebrow">Appointment enquiry</span>
-              <h2>Start with WhatsApp</h2>
-              <p>Share your details in the quick form, or open a ready message now.</p>
-              <a className="button button-whatsapp full" href={waLink} target="_blank" rel="noreferrer" data-testid="modal-direct-whatsapp">
-                <WhatsAppIcon size={18} /> WhatsApp the hospital
-              </a>
-              <button className="modal-form-link" onClick={() => { setBookingOpen(false); document.querySelector('#appointment')?.scrollIntoView({ behavior: 'smooth' }); }} data-testid="modal-form-link">
-                Use the enquiry form instead <ArrowRight size={15} />
-              </button>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }

@@ -1,14 +1,21 @@
 import './globals.css'
 
+// DEMO CONFIGURATION:
+// This deployment is a client preview/demo on Vercel.
+// Robots are set to noindex/nofollow to prevent search engines from treating the demo URL as the official hospital site.
+// When moving to the hospital's verified domain, set NEXT_PUBLIC_IS_PRODUCTION_SITE="true" or toggle robots to index: true, follow: true.
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://satyahospitals.in');
+
 export const metadata = {
-  metadataBase: new URL('https://satyahospitals.in'),
+  metadataBase: new URL(baseUrl),
   title: 'Satya Hospitals – Orthopaedic Doctor in Machilipatnam | Dr. Satya Phanindra Kurella',
   description: 'Satya Hospitals is Machilipatnam\'s trusted orthopaedic & pain clinic. Dr. Satya Phanindra Kurella (MBBS, D.Ortho, DNB Ortho, FIJR, FIRD) specialises in joint replacement, spine care & trauma. Book today.',
   keywords: 'orthopaedic doctor Machilipatnam, joint replacement Machilipatnam, spine care Andhra Pradesh, Dr Satya Phanindra Kurella, orthopaedic clinic Krishna district, knee replacement Machilipatnam',
   openGraph: {
     title: 'Satya Hospitals – Orthopaedic Doctor in Machilipatnam',
     description: 'Focused orthopaedic, joint replacement, spine & pain care. Serving Machilipatnam & Krishna District. Book a consultation today.',
-    url: 'https://satyahospitals.in',
+    url: baseUrl,
     siteName: 'Satya Hospitals',
     images: [
       {
@@ -28,8 +35,14 @@ export const metadata = {
     images: ['/doctor-hero.png'],
   },
   robots: {
-    index: true,
-    follow: true,
+    index: false,
+    follow: false,
+    nocache: true,
+    googleBot: {
+      index: false,
+      follow: false,
+      noimageindex: true,
+    },
   },
 }
 

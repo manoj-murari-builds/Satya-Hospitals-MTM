@@ -589,55 +589,7 @@ a {
   padding: 105px 0;
 }
 
-.doctor-section {
-  background: var(--paper);
-}
 
-.doctor-profile-standalone {
-  max-width: 780px;
-  margin: 0 auto;
-}
-
-/* Layout update to match Emergent spacing */
-.doctor-grid {
-  display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 80px;
-  align-items: center;
-}
-
-.doctor-feature {
-  position: relative;
-}
-
-.portrait-caption {
-  background: #ffffff;
-  border: 1px solid var(--line);
-  padding: 17px 19px;
-  position: absolute;
-  bottom: -26px;
-  right: -20px;
-  box-shadow: 0 13px 35px rgba(16, 44, 66, 0.07);
-  min-width: 230px;
-}
-
-.portrait-caption span,
-.portrait-caption strong {
-  display: block;
-}
-
-.portrait-caption span {
-  font-size: 9px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--teal);
-  font-weight: 800;
-  margin-bottom: 5px;
-}
-
-.portrait-caption strong {
-  font-size: 15px;
-}
 
 .section-intro {
   max-width: 650px;
@@ -658,37 +610,13 @@ a {
   line-height: 1.85;
 }
 
-.credential-list {
-  display: flex;
-  gap: 9px;
-  flex-wrap: wrap;
-  margin: 24px 0;
-}
 
-.credential-list div {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  border: 1px solid var(--line);
-  background: #ffffff;
-  padding: 10px 12px;
-  font-size: 12px;
-  color: var(--navy);
-}
 
-.credential-list svg {
-  color: var(--teal);
-}
-
-.action-row {
-  margin-top: 25px;
-}
-
-.services-section {
+.departments-section {
   background: #ffffff;
 }
 
-.services-section .section-intro,
+.departments-section .section-intro,
 .facilities-section .section-intro {
   margin-bottom: 47px;
 }
@@ -757,7 +685,138 @@ a {
   cursor: pointer;
 }
 
-/* Reviews — auto-scrolling marquee */
+/* ── Departments & Specialties section ─────────────────────────────── */
+
+/* Primary specialty card — Orthopaedics, full-width, navy */
+.dept-primary-card {
+  background: var(--navy);
+  padding: 40px;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dept-primary-card:after {
+  content: '';
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border: 1px solid rgba(52, 212, 192, 0.12);
+  border-radius: 50%;
+  right: -160px;
+  top: -200px;
+  pointer-events: none;
+}
+
+.dept-primary-header {
+  margin-bottom: 32px;
+}
+
+.dept-primary-header h3 {
+  font-family: var(--heading-font) !important;
+  font-size: clamp(28px, 3.5vw, 40px);
+  font-weight: 400 !important;
+  letter-spacing: -0.04em;
+  color: #ffffff;
+  margin: 14px 0 12px;
+}
+
+.dept-primary-header > p {
+  color: #b0c9d5;
+  font-size: 13px;
+  line-height: 1.8;
+  max-width: 680px;
+}
+
+/* Override service-card colours and layout inside the dark primary card */
+.dept-primary-card .service-grid,
+.orthopaedic-services-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.dept-primary-card .service-card {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dept-primary-card .service-card:hover {
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.25);
+}
+
+.dept-primary-card .service-card h3 {
+  color: #ffffff;
+}
+
+.dept-primary-card .service-card p {
+  color: #9dbac6;
+}
+
+.dept-primary-card .service-card button {
+  color: #7de4da;
+}
+
+.dept-primary-card .service-number {
+  color: #3a7d87;
+}
+
+/* Secondary departments — 2-column grid */
+.dept-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.dept-secondary-card {
+  border: 1px solid var(--line);
+  padding: 26px;
+  background: linear-gradient(145deg, #ffffff, #f8fbfb);
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.dept-secondary-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 35px rgba(15, 40, 68, 0.08);
+}
+
+/* icon-box is already globally styled; just reset margin inside dept card */
+.dept-secondary-card .icon-box {
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+.dept-secondary-content h3 {
+  font-family: var(--heading-font) !important;
+  font-size: 19px;
+  font-weight: 400 !important;
+  letter-spacing: -0.02em;
+  color: var(--navy);
+  margin: 0 0 9px;
+}
+
+.dept-secondary-content p {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.75;
+  margin: 0 0 13px;
+}
+
+.dept-secondary-content button {
+  border: 0;
+  background: transparent;
+  color: var(--teal);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+
 .reviews-section {
   background: #ffffff;
   border-top: 1px solid var(--line);
@@ -994,35 +1053,7 @@ a {
   margin: 0;
 }
 
-.insights-section {
-  background: #eaf4f4;
-}
 
-.insight-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 100px;
-  align-items: center;
-}
-
-.insight-list {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border-top: 1px solid #b5d6d3;
-}
-
-.insight-list a {
-  display: flex;
-  justify-content: space-between;
-  padding: 16px 0;
-  border-bottom: 1px solid #b5d6d3;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.insight-list a:hover {
-  color: var(--teal);
-}
 
 .appointment-section {
   background: #ffffff;
@@ -1375,65 +1406,7 @@ a {
   display: none;
 }
 
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(7, 21, 35, 0.79);
-  z-index: 50;
-  display: grid;
-  place-items: center;
-  padding: 20px;
-}
 
-.booking-modal {
-  background: #ffffff;
-  padding: 34px;
-  max-width: 430px;
-  width: 100%;
-  position: relative;
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.33);
-}
-
-.booking-modal h2 {
-  font-size: 36px;
-  color: var(--navy);
-  margin: 14px 0 8px;
-  letter-spacing: -0.04em;
-}
-
-.booking-modal p {
-  font-size: 12px;
-  line-height: 1.7;
-  color: var(--muted);
-  margin-bottom: 24px;
-}
-
-.modal-close {
-  position: absolute;
-  right: 17px;
-  top: 17px;
-  border: 0;
-  background: var(--paper);
-  width: 32px;
-  height: 32px;
-  display: grid;
-  place-items: center;
-  color: var(--navy);
-  cursor: pointer;
-}
-
-.modal-form-link {
-  margin: 18px auto 0;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  border: 0;
-  background: transparent;
-  color: var(--teal);
-  font-size: 11px;
-  font-weight: 800;
-  cursor: pointer;
-}
 
 @media (max-width: 900px) {
   .hero-trust-doctor {
@@ -1472,12 +1445,10 @@ a {
   }
 
   .hero-grid,
-  .doctor-grid,
   .conditions-grid,
   .appointment-grid,
   .location-grid,
-  .faq-layout,
-  .insight-layout {
+  .faq-layout {
     grid-template-columns: 1fr;
     gap: 50px;
   }
@@ -1523,6 +1494,152 @@ a {
 
   .conditions-grid {
     gap: 35px;
+  }
+
+  .dept-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ── Mobile Screens (< 768px) ───────────────────────────────────────── */
+@media (max-width: 767px) {
+  html {
+    scroll-padding-top: 70px;
+    scroll-padding-bottom: 75px;
+  }
+
+  /* Strict 1-column layout for Orthopaedics service cards */
+  .dept-primary-card .service-grid,
+  .orthopaedic-services-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px;
+  }
+
+  .dept-primary-card {
+    padding: 24px 18px;
+    border-radius: 0;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .dept-primary-header {
+    margin-bottom: 22px;
+  }
+
+  .dept-primary-header h3 {
+    font-size: clamp(24px, 6vw, 32px);
+    line-height: 1.15;
+    margin: 10px 0 8px;
+  }
+
+  .dept-primary-header > p {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  /* Service cards fit completely in viewport with natural text wrapping */
+  .service-card {
+    min-height: auto;
+    padding: 22px 20px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .service-card h3 {
+    font-size: 20px;
+    line-height: 1.25;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    padding-right: 32px;
+  }
+
+  .service-card p {
+    min-height: 0;
+    font-size: 13px;
+    line-height: 1.65;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    margin: 0 0 16px;
+  }
+
+  /* Images and icons inside cards cannot overflow */
+  .service-card img,
+  .service-card svg,
+  .dept-secondary-card img,
+  .dept-secondary-card svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Secondary departments also 1-column on mobile */
+  .dept-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px;
+  }
+
+  .dept-secondary-card {
+    flex-direction: column;
+    gap: 14px;
+    padding: 22px 20px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .dept-secondary-content h3 {
+    font-size: 18px;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .dept-secondary-content p {
+    font-size: 12px;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* Mobile fixed CTA action bar for mobile viewports */
+  .mobile-cta {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr 1fr;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 30;
+    background: rgba(8, 27, 46, 0.95);
+    backdrop-filter: blur(13px);
+    padding: 9px 10px calc(9px + env(safe-area-inset-bottom));
+    gap: 7px;
+  }
+
+  .mobile-cta a,
+  .mobile-cta button {
+    border: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 12px 4px;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.07);
+    font-size: 10px;
+    font-weight: 800;
+  }
+
+  .mobile-cta a:nth-child(2) {
+    background: #20b95a;
+  }
+
+  .mobile-cta button {
+    background: var(--teal);
+  }
+
+  .footer-bottom {
+    padding-bottom: calc(75px + env(safe-area-inset-bottom));
   }
 }
 
@@ -1601,16 +1718,6 @@ a {
     width: 105px;
   }
 
-  /* Cap the full-body portrait so it doesn't consume an entire screen */
-  .doctor-feature .doctor-portrait {
-    max-height: 480px;
-    aspect-ratio: unset;
-  }
-
-  .doctor-feature .doctor-portrait img {
-    object-position: top center;
-  }
-
   .credential-inner {
     padding: 18px 0;
   }
@@ -1619,26 +1726,18 @@ a {
     padding: 75px 0;
   }
 
-  .doctor-grid {
-    gap: 55px;
-  }
-
-  .portrait-caption {
-    right: 0;
-    bottom: -36px;
-  }
-
   .section-intro h2 {
     font-size: 38px;
   }
 
   .service-grid,
+  .orthopaedic-services-grid,
+  .dept-primary-card .service-grid,
   .journey-grid,
   .facility-grid,
   .condition-cloud,
-  .appointment-form,
-  .insight-list {
-    grid-template-columns: 1fr;
+  .appointment-form {
+    grid-template-columns: 1fr !important;
   }
 
   /* reviews-grid uses flex scroll — don't reset it */
@@ -1653,10 +1752,31 @@ a {
 
   .service-card {
     min-height: 0;
+    padding: 20px 16px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .service-card p {
     min-height: 0;
+  }
+
+  .dept-primary-card {
+    padding: 20px 14px;
+  }
+
+  .dept-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .dept-secondary-card {
+    flex-direction: column;
+    gap: 14px;
+    padding: 20px 16px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .facility-grid {
