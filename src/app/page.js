@@ -39,7 +39,7 @@ const config = {
   },
 };
 
-const waMessage = 'Hello, I have a question about Satya Hospitals.';
+const waMessage = 'Hello Satya Hospitals, I would like to know more about consultation and appointment availability. Please guide me.';
 const waLink = `${config.whatsapp}?text=${encodeURIComponent(waMessage)}`;
 
 const services = [
@@ -609,7 +609,7 @@ function App() {
       <div className="mobile-cta" data-testid="sticky-mobile-cta">
         <a href={config.phoneHref} data-testid="sticky-call-link"><Phone size={16} /> Call</a>
         <a href={waLink} target="_blank" rel="noreferrer" data-testid="sticky-whatsapp-link"><WhatsAppIcon size={16} /> WhatsApp</a>
-        <button onClick={scrollToAppointment} data-testid="sticky-book-button"><CalendarDays size={16} /> Book</button>
+        <a href={config.mapsUrl} target="_blank" rel="noreferrer" data-testid="sticky-directions-link"><MapPin size={16} /> Directions</a>
       </div>
     </div>
   );
